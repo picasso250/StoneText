@@ -19,11 +19,11 @@ StoneText项目旨在通过将文字刻在赛博石头上，利用以太坊区�
    python -m http.server
    ```
 
-2. 打开浏览器，访问 http://localhost:8000，您将能够访问StoneText应用程序。
+2. 打开浏览器，访问 http://localhost:8000 ，您将能够访问StoneText应用程序。
 
 使用方法
 ---
-1. 运行服务并打开浏览器，访问 http://localhost:5000。
+1. 运行服务并打开浏览器，访问 http://localhost:8000 。
 
 3. 在界面中输入您想要刻在赛博石头上的文字内容。
 

@@ -87,7 +87,21 @@ document.getElementById("storeButton").addEventListener("click", async () => {
 
 function createListItem(userName, userString) {
     const listItem = document.createElement("li");
-    listItem.textContent = `${userName}: ${userString}`;
+
+    const userNameSpan = document.createElement("span");
+    userNameSpan.textContent = userName;
+    userNameSpan.className = "user-name";
+
+    const brElement = document.createElement("br");
+
+    const userStringSpan = document.createElement("span");
+    userStringSpan.textContent = userString;
+    userStringSpan.className = "user-string";
+
+    listItem.appendChild(userNameSpan);
+    listItem.appendChild(brElement);
+    listItem.appendChild(userStringSpan);
+
     return listItem;
 }
 

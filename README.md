@@ -2,39 +2,28 @@ StoneText
 ===
 StoneText项目旨在通过将文字刻在赛博石头上，利用以太坊区块链技术，实现文字内容的永久存储和传承。
 
-安装与配置
----
-1. 首先，确保您已安装最新版本的以太坊钱包（例如MetaMask）和浏览器插件。
-
-2. 克隆StoneText仓库到您的本地计算机。
+安装与配置:
+===
+1. 克隆StoneText仓库到您的本地计算机。
    ```
-   git clone https://github.com/StoneTextProject.git
+   git clone https://github.com/picasso250/StoneText.git
    ```
 
-3. 进入项目目录。
+2. 进入项目目录。
    ```
    cd StoneText
    ```
 
-4. 在项目根目录下，创建并激活虚拟环境（可选，但推荐）。
+1. 在项目根目录下，开启一个本地服务，比如使用Python自带的http服务器。
    ```
-   python -m venv venv
-   source venv/bin/activate
+   python -m http.server
    ```
 
-5. 安装所需的Python依赖。
-   ```
-   pip install -r requirements.txt
-   ```
+2. 打开浏览器，访问 http://localhost:8000，您将能够访问StoneText应用程序。
 
 使用方法
 ---
-1. 运行应用程序。
-   ```
-   python app.py
-   ```
-
-2. 打开浏览器，访问 http://localhost:5000。
+1. 运行服务并打开浏览器，访问 http://localhost:5000。
 
 3. 在界面中输入您想要刻在赛博石头上的文字内容。
 

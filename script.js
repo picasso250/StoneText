@@ -85,6 +85,12 @@ document.getElementById("storeButton").addEventListener("click", async () => {
     }
 });
 
+function createListItem(userName, userString) {
+    const listItem = document.createElement("li");
+    listItem.textContent = `${userName}: ${userString}`;
+    return listItem;
+}
+
 let options = {
     fromBlock: "genesis",
     toBlock: 'latest'
@@ -94,11 +100,10 @@ contract.getPastEvents("StringStored", options)
     .then(results => {
         const stringList = document.getElementById("stringList");
         results.forEach(event => {
-            const listItem = document.createElement("li");
             const userName = event.returnValues.user;
             const userString = event.returnValues.str;
-            listItem.textContent = `${userName}: ${userString}`;
-            stringList.appendChild(listItem);
+            const listItem = createListItem(userName, userString);
+            stringList.insertBefore(listItem, stringList.firstChild);
         });
     })
     .catch(err => { throw err; });
@@ -113,7 +118,11 @@ contract.once("allEvents", {
         if (event.event === "StringStored") {
             const userName = event.returnValues.user;
             const userString = event.returnValues.str;
-            console.log(`User: ${userName}, String: ${userString}`);
+
+            // Create and prepend the new list item
+            const stringList = document.getElementById("stringList");
+            const listItem = createListItem(userName, userString);
+            stringList.insertBefore(listItem, stringList.firstChild);
         }
     }
 });

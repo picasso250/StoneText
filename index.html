@@ -24,21 +24,32 @@
             cursor: pointer;
         }
 
-        .user-name {
+        .url {
             font-size: 0.8rem;
-            opacity: 0.5;
         }
     </style>
-    <title>StoneText - 把字刻在赛博石头上</title>
+    <title>EternalRipple - 永恒涟漪</title>
 </head>
 
 <body>
-    <h1>StoneText - 把字刻在赛博石头上</h1>
+    <h1>EternalRipple - 永恒涟漪</h1>
     <div>
-        <label for="input">输入文字：</label>
-        <input type="text" id="input">
-        <button id="storeButton">存储文字</button>
+        <label for="urlInput">输入网址：</label>
+        <input type="text" id="urlInput">
     </div>
+    <div>
+        <label for="commentInput">输入评论：</label>
+        <input type="text" id="commentInput">
+    </div>
+    <button id="storeButton">存储评论</button>
+
+    <div>
+        <label for="retrieveUrlInput">输入要检索的网址：</label>
+        <input type="text" id="retrieveUrlInput">
+        <button id="retrieveButton">检索评论</button>
+        <p id="retrievedComment"></p>
+    </div>
+
     <ul id="stringList"></ul>
 
     <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>

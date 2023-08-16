@@ -34,12 +34,17 @@
 
 <body>
     <h1>StoneText - 把字刻在赛博石头上</h1>
+    <p>欢迎使用 StoneText！这是一个将文字刻在赛博石头上的应用。在下面的输入框中输入你想刻在石头上的文字，然后点击“存储文字”按钮。</p>
     <div>
         <label for="input">输入文字：</label>
         <input type="text" id="input">
         <button id="storeButton">存储文字</button>
     </div>
+    <div id="msgError"></div>
     <ul id="stringList"></ul>
+
+    <p>请先安装MetaMask(小狐狸)插件，并切换到 Sepolia 测试链。
+        确保你有足够的测试币，你可以从<a href="https://sepoliafaucet.com/" target="_blank">Sepolia Faucet</a>获取测试币。</p>
 
     <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
     <script src="script.js"></script>

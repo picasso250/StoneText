@@ -110,33 +110,19 @@ let options = {
     toBlock: 'latest'
 };
 
-contract.getPastEvents("StringStored", options)
-    .then(results => {
-        const stringList = document.getElementById("stringList");
-        results.forEach(event => {
-            const userName = event.returnValues.user;
-            const userString = event.returnValues.str;
-            const listItem = createListItem(userName, userString);
-            stringList.insertBefore(listItem, stringList.firstChild);
-        });
-    })
-    .catch(err => { throw err; });
-
-
-contract.once("allEvents", {
+// Listen for new StringStored events
+contract.events.StringStored({
     fromBlock: "genesis"
 }, function (error, event) {
     if (error) {
         console.error(error);
     } else {
-        if (event.event === "StringStored") {
-            const userName = event.returnValues.user;
-            const userString = event.returnValues.str;
+        const userName = event.returnValues.user;
+        const userString = event.returnValues.str;
 
-            // Create and prepend the new list item
-            const stringList = document.getElementById("stringList");
-            const listItem = createListItem(userName, userString);
-            stringList.insertBefore(listItem, stringList.firstChild);
-        }
+        // Create and prepend the new list item
+        const stringList = document.getElementById("stringList");
+        const listItem = createListItem(userName, userString);
+        stringList.insertBefore(listItem, stringList.firstChild);
     }
 });

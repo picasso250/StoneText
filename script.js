@@ -61,7 +61,28 @@ function listenForEvents(contract) {
         const decryptedStatus = key ? decryptMessage(encryptedStatus, key) || "解密失败" : encryptedStatus;
         const stringList = document.getElementById("stringList");
         stringList.insertBefore(createListItem(userName, decryptedStatus), stringList.firstChild);
+        toggleDecryptButton(); // Update decrypt button visibility
     });
+}
+
+const decryptButton = document.getElementById("decryptButton");
+
+// Toggle Decrypt button visibility
+function toggleDecryptButton() {
+    const key = document.getElementById("keyInput").value;
+    decryptButton.style.display = key ? "block" : "none";
+}
+
+// Decrypt all records
+function decryptAllRecords() {
+    const key = document.getElementById("keyInput").value;
+    const listItems = document.querySelectorAll("#stringList li");
+    listItems.forEach(item => {
+        const encryptedString = item.querySelector(".user-string").innerText;
+        const decryptedString = decryptMessage(encryptedString, key);
+        item.querySelector(".user-string").innerText = decryptedString || encryptedString; // If decryption fails, keep original
+    });
+    decryptButton.style.display = "none";
 }
 
 // Load ABI and initialize contract
@@ -71,13 +92,15 @@ loadABI((contractABI) => {
 
     // Event listener for button click
     document.getElementById("okButton").addEventListener("click", async () => {
-        const input = document.getElementById("input").value;
-        const key = document.getElementById("keyInput").value;
+        const text = document.getElementById("textInput").value.trim();
+        const key = document.getElementById("keyInput").value.trim();
+
+        if (!text) return alert("请输入状态！");
 
         if (!userAccount) await connectWallet();
         if (!key) return alert("请输入密钥！");
 
-        const encryptedMessage = encryptMessage(input, key);
+        const encryptedMessage = encryptMessage(text, key);
         try {
             await contract.methods.updateStatus(encryptedMessage).send({ from: userAccount });
             console.log("Message stored successfully:", encryptedMessage);
@@ -85,4 +108,10 @@ loadABI((contractABI) => {
             console.error("Error storing encrypted message:", error);
         }
     });
+
+    // Event listener for decrypt button
+    decryptButton.addEventListener("click", decryptAllRecords);
+
+    // Event listener for key input change
+    document.getElementById("keyInput").addEventListener("input", toggleDecryptButton);
 });

@@ -88,11 +88,12 @@
     <h1>Chat（对称加密）实验版</h1>
     <p>欢迎使用 Chat（对称加密）实验版！输入文字和密钥后，点击“确认”按钮以加密并存储内容。</p>
     <div>
-        <label for="input">输入文字：</label>
-        <input type="text" id="input">
+        <label for="textInput">输入文字：</label>
+        <input type="text" id="textInput">
         <label for="keyInput">密钥：</label>
         <input type="password" id="keyInput" placeholder="请输入密钥">
         <button id="okButton">确认</button>
+        <button id="decryptButton" style="display: none;">解密所有记录</button>
     </div>
     <ul id="stringList"></ul>
 

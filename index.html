@@ -5,30 +5,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
         h1 {
             text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-align: center;
+            margin: 0 0 20px;
+        }
+
+        div {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
         }
 
         input[type="text"],
         input[type="password"] {
-            padding: 5px;
+            width: calc(100% - 20px);
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            margin-right: 10px;
+            margin-bottom: 10px;
         }
 
         button {
-            padding: 5px 10px;
+            width: 100%;
+            padding: 10px;
             background-color: #007bff;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
         }
 
         .user-name {
             font-size: 0.8rem;
             opacity: 0.5;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background: #e9ecef;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 4px;
         }
     </style>
     <title>Chat（对称加密）实验版</title>
@@ -42,9 +92,8 @@
         <input type="text" id="input">
         <label for="keyInput">密钥：</label>
         <input type="password" id="keyInput" placeholder="请输入密钥">
-        <button id="storeButton">确认</button>
+        <button id="okButton">确认</button>
     </div>
-    <div id="msgError"></div>
     <ul id="stringList"></ul>
 
     <p>请先安装 MetaMask 插件，并切换到 Sepolia 测试链。</p>

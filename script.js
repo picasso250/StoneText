@@ -13,7 +13,6 @@ function loadABI(callback) {
             return response.json();
         })
         .then(contractABI => {
-            console.log("ABI loaded successfully:", contractABI);
             callback && callback(contractABI);
         })
         .catch(error => {
@@ -22,11 +21,7 @@ function loadABI(callback) {
 }
 
 loadABI(function (contractABI) {
-
-    // Get the contract instance
     const contract = new web3.eth.Contract(contractABI, contractAddress);
-
-    // Get the account from MetaMask
     let userAccount;
 
     // Prompt user to connect their MetaMask wallet
@@ -44,16 +39,43 @@ loadABI(function (contractABI) {
         }
     }
 
+    // AES encryption
+    function encryptMessage(message, key) {
+        return CryptoJS.AES.encrypt(message, key).toString();
+    }
+
+    // AES decryption
+    function decryptMessage(ciphertext, key) {
+        try {
+            const bytes = CryptoJS.AES.decrypt(ciphertext, key);
+            return bytes.toString(CryptoJS.enc.Utf8);
+        } catch (error) {
+            console.error("Decryption failed:", error);
+            return null;
+        }
+    }
+
     // Store button click event
     document.getElementById("storeButton").addEventListener("click", async () => {
         const input = document.getElementById("input").value;
+        const key = document.getElementById("keyInput").value;
+
         if (!userAccount) {
             await connectWallet();
         }
+
+        if (!key) {
+            alert("请输入密钥！");
+            return;
+        }
+
+        const encryptedMessage = encryptMessage(input, key);
+
         try {
-            await contract.methods.updateStatus(input).send({ from: userAccount });
+            await contract.methods.updateStatus(encryptedMessage).send({ from: userAccount });
+            console.log("Message stored successfully:", encryptedMessage);
         } catch (error) {
-            console.error("Error storing string:", error);
+            console.error("Error storing encrypted message:", error);
         }
     });
 
@@ -77,11 +99,6 @@ loadABI(function (contractABI) {
         return listItem;
     }
 
-    let options = {
-        fromBlock: "genesis",
-        toBlock: 'latest'
-    };
-
     // Listen for new events
     contract.events.StatusLog({
         fromBlock: "genesis"
@@ -89,12 +106,18 @@ loadABI(function (contractABI) {
         if (error) {
             console.error(error);
         } else {
-            const userName = event.returnValues.user;
-            const userString = event.returnValues.newStatus;
+            const key = document.getElementById("keyInput").value;
 
-            // Create and prepend the new list item
+            const userName = event.returnValues.user;
+            const encryptedStatus = event.returnValues.newStatus;
+
+            let decryptedStatus = encryptedStatus;
+            if (key) {
+                decryptedStatus = decryptMessage(encryptedStatus, key) || "解密失败";
+            }
+
             const stringList = document.getElementById("stringList");
-            const listItem = createListItem(userName, userString);
+            const listItem = createListItem(userName, decryptedStatus);
             stringList.insertBefore(listItem, stringList.firstChild);
         }
     });

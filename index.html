@@ -9,10 +9,12 @@
             text-align: center;
         }
 
-        input[type="text"] {
+        input[type="text"],
+        input[type="password"] {
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            margin-right: 10px;
         }
 
         button {
@@ -34,19 +36,21 @@
 
 <body>
     <h1>Chat（对称加密）实验版</h1>
-    <p>欢迎使用 Chat（对称加密）实验版！这是一个用于实验对称加密的应用。在下面的输入框中输入你想加密的文字，然后点击“确认”按钮。</p>
+    <p>欢迎使用 Chat（对称加密）实验版！输入文字和密钥后，点击“确认”按钮以加密并存储内容。</p>
     <div>
         <label for="input">输入文字：</label>
         <input type="text" id="input">
+        <label for="keyInput">密钥：</label>
+        <input type="password" id="keyInput" placeholder="请输入密钥">
         <button id="storeButton">确认</button>
     </div>
     <div id="msgError"></div>
     <ul id="stringList"></ul>
 
-    <p>请先安装MetaMask(小狐狸)插件，并切换到 Sepolia 测试链。
-        确保你有足够的测试币，你可以从<a href="https://sepoliafaucet.com/" target="_blank">Sepolia Faucet</a>获取测试币。</p>
+    <p>请先安装 MetaMask 插件，并切换到 Sepolia 测试链。</p>
 
     <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="script.js"></script>
 </body>
 

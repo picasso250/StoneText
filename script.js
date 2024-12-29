@@ -44,12 +44,24 @@ function decryptMessage(ciphertext, key) {
     }
 }
 
-// Create list item for new events
 function createListItem(userName, userString) {
     const listItem = document.createElement("li");
-    listItem.innerHTML = `<span class="user-name">${userName}</span><br><span class="user-string">${userString}</span>`;
+    const userNameSpan = document.createElement("span");
+    userNameSpan.className = "user-name";
+    userNameSpan.textContent = userName; // 使用 textContent
+    
+    const userStringSpan = document.createElement("span");
+    userStringSpan.className = "user-string";
+    userStringSpan.textContent = userString; // 使用 textContent
+
+    listItem.appendChild(userNameSpan);
+    listItem.appendChild(document.createElement("br"));
+    listItem.appendChild(userStringSpan);
+    
     return listItem;
 }
+
+const okButton = document.getElementById("okButton");
 
 // Listen for new events
 function listenForEvents(contract) {
@@ -61,7 +73,7 @@ function listenForEvents(contract) {
         const decryptedStatus = key ? decryptMessage(encryptedStatus, key) || "解密失败" : encryptedStatus;
         const stringList = document.getElementById("stringList");
         stringList.insertBefore(createListItem(userName, decryptedStatus), stringList.firstChild);
-        toggleDecryptButton(); // Update decrypt button visibility
+        okButton.disabled = false; // Re-enable the button after operation
     });
 }
 
@@ -91,14 +103,21 @@ loadABI((contractABI) => {
     listenForEvents(contract);
 
     // Event listener for button click
-    document.getElementById("okButton").addEventListener("click", async () => {
+    okButton.addEventListener("click", async () => {
+
         const text = document.getElementById("textInput").value.trim();
         const key = document.getElementById("keyInput").value.trim();
 
-        if (!text) return alert("请输入状态！");
+        if (!text) {
+            return alert("请输入状态！");
+        }
 
         if (!userAccount) await connectWallet();
-        if (!key) return alert("请输入密钥！");
+        if (!key) {
+            return alert("请输入密钥！");
+        }
+        
+        okButton.disabled = true; // Disable the button
 
         const encryptedMessage = encryptMessage(text, key);
         try {
@@ -106,6 +125,8 @@ loadABI((contractABI) => {
             console.log("Message stored successfully:", encryptedMessage);
         } catch (error) {
             console.error("Error storing encrypted message:", error);
+        } finally {
+            okButton.disabled = false; // Re-enable the button after operation
         }
     });
 

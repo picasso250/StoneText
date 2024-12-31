@@ -74,6 +74,14 @@ document.title = "文章存储地";
 const textInput = document.getElementById("textInput");
 textInput.outerHTML = '<textarea id="textInput"></textarea>';
 
+// Initialize CodeMirror Editor
+const textArea = document.getElementById('textInput');
+const editor = CodeMirror.fromTextArea(textArea, {
+    mode: 'markdown',
+    lineNumbers: false,
+    theme: 'default'
+});
+
 // Listen for new events
 function listenForEvents(contract) {
     contract.events.StatusLog({ fromBlock: "genesis" }, (error, event) => {
@@ -94,7 +102,7 @@ loadABI((contractABI) => {
 
     // Event listener for button click
     okButton.addEventListener("click", async () => {
-        const text = document.getElementById("textInput").value.trim();
+        const text = editor.getValue().trim();
 
         if (!text) {
             return alert("请输入状态！");

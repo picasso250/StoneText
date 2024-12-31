@@ -52,7 +52,7 @@ function createListItem(userName, userString) {
     
     const userStringSpan = document.createElement("span");
     userStringSpan.className = "user-string";
-    userStringSpan.textContent = userString; // 使用 textContent
+    userStringSpan.innerHTML = marked.parse(userString, { sanitize: true }); // Render Markdown safely
 
     listItem.appendChild(userNameSpan);
     listItem.appendChild(document.createElement("br"));
@@ -63,38 +63,28 @@ function createListItem(userName, userString) {
 
 const okButton = document.getElementById("okButton");
 
+// Update title
+document.title = "文章存储地";
+
+// Remove key-related input and button
+// const keyInput = document.getElementById("keyInput");
+// const decryptButton = document.getElementById("decryptButton");
+
+// Change text input to textarea
+const textInput = document.getElementById("textInput");
+textInput.outerHTML = '<textarea id="textInput"></textarea>';
+
 // Listen for new events
 function listenForEvents(contract) {
     contract.events.StatusLog({ fromBlock: "genesis" }, (error, event) => {
         if (error) return console.error(error);
-        const key = document.getElementById("keyInput").value;
         const userName = event.returnValues.user;
         const encryptedStatus = event.returnValues.newStatus;
-        const decryptedStatus = key ? decryptMessage(encryptedStatus, key) || "解密失败" : encryptedStatus;
+        const decryptedStatus = encryptedStatus; // No decryption
         const stringList = document.getElementById("stringList");
         stringList.insertBefore(createListItem(userName, decryptedStatus), stringList.firstChild);
         okButton.disabled = false; // Re-enable the button after operation
     });
-}
-
-const decryptButton = document.getElementById("decryptButton");
-
-// Toggle Decrypt button visibility
-function toggleDecryptButton() {
-    const key = document.getElementById("keyInput").value;
-    decryptButton.style.display = key ? "block" : "none";
-}
-
-// Decrypt all records
-function decryptAllRecords() {
-    const key = document.getElementById("keyInput").value;
-    const listItems = document.querySelectorAll("#stringList li");
-    listItems.forEach(item => {
-        const encryptedString = item.querySelector(".user-string").innerText;
-        const decryptedString = decryptMessage(encryptedString, key);
-        item.querySelector(".user-string").innerText = decryptedString || encryptedString; // If decryption fails, keep original
-    });
-    decryptButton.style.display = "none";
 }
 
 // Load ABI and initialize contract
@@ -104,35 +94,30 @@ loadABI((contractABI) => {
 
     // Event listener for button click
     okButton.addEventListener("click", async () => {
-
         const text = document.getElementById("textInput").value.trim();
-        const key = document.getElementById("keyInput").value.trim();
 
         if (!text) {
             return alert("请输入状态！");
         }
 
         if (!userAccount) await connectWallet();
-        if (!key) {
-            return alert("请输入密钥！");
-        }
         
         okButton.disabled = true; // Disable the button
 
-        const encryptedMessage = encryptMessage(text, key);
+        const encryptedMessage = text; // No encryption
         try {
             await contract.methods.updateStatus(encryptedMessage).send({ from: userAccount });
             console.log("Message stored successfully:", encryptedMessage);
         } catch (error) {
-            console.error("Error storing encrypted message:", error);
+            console.error("Error storing message:", error);
         } finally {
             okButton.disabled = false; // Re-enable the button after operation
         }
     });
 
-    // Event listener for decrypt button
-    decryptButton.addEventListener("click", decryptAllRecords);
+    // Remove event listener for decrypt button
+    // decryptButton.addEventListener("click", decryptAllRecords);
 
-    // Event listener for key input change
-    document.getElementById("keyInput").addEventListener("input", toggleDecryptButton);
+    // Remove event listener for key input change
+    // document.getElementById("keyInput").addEventListener("input", toggleDecryptButton);
 });

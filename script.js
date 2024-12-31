@@ -49,7 +49,7 @@ function createListItem(userName, userString) {
     const userNameSpan = document.createElement("span");
     userNameSpan.className = "user-name";
     userNameSpan.textContent = userName; // 使用 textContent
-    
+
     const userStringSpan = document.createElement("span");
     userStringSpan.className = "user-string";
     userStringSpan.innerHTML = marked.parse(userString, { sanitize: true }); // Render Markdown safely
@@ -57,7 +57,7 @@ function createListItem(userName, userString) {
     listItem.appendChild(userNameSpan);
     listItem.appendChild(document.createElement("br"));
     listItem.appendChild(userStringSpan);
-    
+
     return listItem;
 }
 
@@ -109,17 +109,34 @@ loadABI((contractABI) => {
         }
 
         if (!userAccount) await connectWallet();
-        
+
         okButton.disabled = true; // Disable the button
 
         const encryptedMessage = text; // No encryption
         try {
-            await contract.methods.updateStatus(encryptedMessage).send({ from: userAccount });
-            console.log("Message stored successfully:", encryptedMessage);
+            contract.methods.updateStatus(encryptedMessage).send({ from: userAccount })
+                .on("transactionHash", hash => {
+                    console.log("Transaction hash:", hash);
+                    okButton.textContent = "写入中..."; // Change button text
+                    editor.setValue(''); // Clear the editor content
+                })
+                .on("receipt", receipt => {
+                    console.log("Transaction receipt:", receipt);
+                    okButton.textContent = "确认"; // Reset button text
+                })
+                .on("confirmation", (confirmationNumber, receipt) => {
+                    okButton.textContent = "确认"; // Reset button text
+                    okButton.disabled = false; // Re-enable the button after operation
+                    console.log("Confirmation number:", confirmationNumber, receipt);
+                })
+                .on("error", error => {
+                    console.error("Transaction error:", error);
+                    okButton.textContent = "确认"; // Reset button text
+                    okButton.disabled = false; // Re-enable the button after operation
+                });
         } catch (error) {
             console.error("Error storing message:", error);
-        } finally {
-            okButton.disabled = false; // Re-enable the button after operation
+            okButton.textContent = "确认"; // Reset button text
         }
     });
 

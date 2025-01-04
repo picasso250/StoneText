@@ -32,3 +32,14 @@ ul {
 .copy-button:hover {
     background: #5a6268;
 }
+
+/* Copy button visibility for large screens */
+@media (min-width: 1024px) {
+    .copy-button {
+        display: none;
+    }
+
+    .article-item:hover .copy-button {
+        display: inline-block;
+    }
+}

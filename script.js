@@ -1,3 +1,4 @@
+
 // Connect to an Ethereum node using Web3.js
 const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
 const contractAddress = "0x4f4B0BaBC9591796cf1ca2636FD9F6520C18953e";
@@ -66,56 +67,6 @@ const okButton = document.getElementById("okButton");
 // Update title
 document.title = "文章存储地";
 
-// Remove key-related input and button
-// const keyInput = document.getElementById("keyInput");
-// const decryptButton = document.getElementById("decryptButton");
-
-// Change text input to textarea
-const textInput = document.getElementById("textInput");
-textInput.outerHTML = '<textarea id="textInput"></textarea>';
-
-// Initialize CodeMirror Editor
-const textArea = document.getElementById('textInput');
-const editor = CodeMirror.fromTextArea(textArea, {
-    mode: 'markdown',
-    lineNumbers: false,
-    theme: 'default'
-});
-
-// Auto-save draft functionality
-let saveTimeout;
-const DRAFT_KEY = 'editor_draft';
-const SAVE_DELAY = 3000; // 3 seconds
-
-// Load draft on page load
-const savedDraft = localStorage.getItem(DRAFT_KEY);
-if (savedDraft) {
-    editor.setValue(savedDraft);
-}
-
-// Save draft on content change
-editor.on('change', () => {
-    if (saveTimeout) {
-        clearTimeout(saveTimeout);
-    }
-    
-    document.title = "文章存储地*";
-    saveTimeout = setTimeout(() => {
-        const content = editor.getValue();
-        localStorage.setItem(DRAFT_KEY, content);
-        document.title = "文章存储地";
-        saveTimeout = null;
-    }, SAVE_DELAY);
-});
-
-// Clear draft when form is submitted
-okButton.addEventListener('click', () => {
-    localStorage.removeItem(DRAFT_KEY);
-    if (saveTimeout) {
-        clearTimeout(saveTimeout);
-        saveTimeout = null;
-    }
-});
 
 // Listen for new events
 function listenForEvents(contract) {

@@ -4,15 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="editor.css">
+    <link rel="stylesheet" href="list.css">
     <title>文章存储地</title>
 </head>
 
 <body>
     <h1>文章存储地</h1>
     <p>欢迎使用文章存储地！输入文字后，点击“确认”按钮以存储内容。</p>
-    <div>
-        <textarea id="textInput" placeholder="输入您的文章内容..."></textarea>
+    <div class="editor-container">
+        <div class="editor-wrapper">
+            <textarea id="textInput" placeholder="输入您的文章内容..."></textarea>
+        </div>
+        <div class="preview-wrapper">
+            <div id="preview" class="preview"></div>
+        </div>
+    </div>
+    <div class="button-container">
+        <button id="previewButton" type="button">预览</button>
         <button id="okButton" type="button">确认</button>
     </div>
     <ul id="stringList"></ul>

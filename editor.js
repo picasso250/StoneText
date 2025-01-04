@@ -7,6 +7,23 @@ const editor = CodeMirror.fromTextArea(textArea, {
     lineWrapping: true
 });
 
+// Initialize preview functionality
+const preview = document.getElementById('preview');
+const previewButton = document.getElementById('previewButton');
+
+function updatePreview() {
+    const content = editor.getValue();
+    preview.innerHTML = marked.parse(content, {
+        sanitize: true,
+        breaks: true
+    });
+}
+
+previewButton.addEventListener('click', () => {
+    updatePreview();
+    preview.style.display = 'block';
+});
+
 // Auto-save draft functionality
 let saveTimeout;
 const DRAFT_KEY = 'editor_draft';

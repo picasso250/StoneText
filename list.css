@@ -1,0 +1,16 @@
+.user-name {
+    font-size: 0.8rem;
+    opacity: 0.5;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background: #e9ecef;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 4px;
+}

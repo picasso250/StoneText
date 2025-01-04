@@ -13,8 +13,12 @@
 <body>
     <h1>文章存储地</h1>
     <p>欢迎使用文章存储地！输入文字后，点击“确认”按钮以存储内容。</p>
+    <div class="tab-container">
+        <button class="tab-button active" id="editTab">编辑</button>
+        <button class="tab-button" id="previewTab">预览</button>
+    </div>
     <div class="editor-container">
-        <div class="editor-wrapper">
+        <div class="editor-wrapper active">
             <textarea id="textInput" placeholder="输入您的文章内容..."></textarea>
         </div>
         <div class="preview-wrapper">
@@ -22,7 +26,6 @@
         </div>
     </div>
     <div class="button-container">
-        <button id="previewButton" type="button">预览</button>
         <button id="okButton" type="button">确认</button>
     </div>
     <ul id="stringList"></ul>

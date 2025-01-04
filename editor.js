@@ -7,9 +7,12 @@ const editor = CodeMirror.fromTextArea(textArea, {
     lineWrapping: true
 });
 
-// Initialize preview functionality
+// Initialize tab functionality
+const editTab = document.getElementById('editTab');
+const previewTab = document.getElementById('previewTab');
+const editorWrapper = document.querySelector('.editor-wrapper');
+const previewWrapper = document.querySelector('.preview-wrapper');
 const preview = document.getElementById('preview');
-const previewButton = document.getElementById('previewButton');
 
 function updatePreview() {
     const content = editor.getValue();
@@ -19,10 +22,33 @@ function updatePreview() {
     });
 }
 
-previewButton.addEventListener('click', () => {
-    updatePreview();
-    preview.style.display = 'block';
-});
+function switchTab(activeTab) {
+    // Update tab buttons
+    editTab.classList.remove('active');
+    previewTab.classList.remove('active');
+    activeTab.classList.add('active');
+
+    // Update content visibility
+    editorWrapper.classList.remove('active');
+    previewWrapper.classList.remove('active');
+    editorWrapper.style.display = 'none';
+    previewWrapper.style.display = 'none';
+    
+    if (activeTab === editTab) {
+        editorWrapper.classList.add('active');
+        editorWrapper.style.display = 'block';
+    } else {
+        updatePreview();
+        previewWrapper.classList.add('active');
+        previewWrapper.style.display = 'block';
+    }
+}
+
+editTab.addEventListener('click', () => switchTab(editTab));
+previewTab.addEventListener('click', () => switchTab(previewTab));
+
+// Initialize with edit tab active
+switchTab(editTab);
 
 // Auto-save draft functionality
 let saveTimeout;

@@ -13,8 +13,7 @@ h1 {
 }
 
 p {
-    text-align: center;
-    margin: 0 0 20px;
+    margin: 20px 0;
 }
 
 .button-container {
@@ -23,7 +22,5 @@ p {
 }
 
 .button-container button {
-    width: auto;
     padding: 8px 16px;
-    margin-left: 10px;
 }

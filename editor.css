@@ -70,3 +70,7 @@
     padding-left: 10px;
     color: #666;
 }
+
+#okButton {
+    width: 100%;
+}

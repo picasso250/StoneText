@@ -48,7 +48,7 @@ function decryptMessage(ciphertext, key) {
 function createListItem(userName, userString) {
     const listItem = document.createElement("li");
     listItem.className = "article-item";
-    
+
     // Store original markdown content
     listItem.dataset.originalContent = userString;
 
@@ -63,11 +63,11 @@ function createListItem(userName, userString) {
     // Add copy button
     const copyButton = document.createElement("button");
     copyButton.className = "copy-button";
-    copyButton.textContent = "复制";
+    const originalText = "复制";
+    copyButton.textContent = originalText;
     copyButton.addEventListener("click", () => {
         navigator.clipboard.writeText(userString)
             .then(() => {
-                const originalText = copyButton.textContent;
                 copyButton.textContent = "已复制";
                 setTimeout(() => {
                     copyButton.textContent = originalText;
@@ -76,7 +76,7 @@ function createListItem(userName, userString) {
             .catch(() => {
                 copyButton.textContent = "复制失败";
                 setTimeout(() => {
-                    copyButton.textContent = "复制";
+                    copyButton.textContent = originalText;
                 }, 3000);
             });
     });
@@ -103,11 +103,19 @@ function listenForEvents(contract) {
         const userName = event.returnValues.user;
         const encryptedStatus = event.returnValues.newStatus;
         const decryptedStatus = encryptedStatus; // No decryption
-        articleList.insertBefore(createListItem(userName, decryptedStatus), articleList.firstChild);
+        const listItem = createListItem(userName, decryptedStatus);
+        articleList.insertBefore(listItem, articleList.firstChild);
+
+        // Apply syntax highlighting
+        listItem.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightBlock(block);
+        });
+
         // Re-render MathJax after new article is added
         if (typeof MathJax !== 'undefined') {
             MathJax.typesetPromise && MathJax.typesetPromise();
         }
+
         okButton.disabled = false; // Re-enable the button after operation
     });
 }

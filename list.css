@@ -9,19 +9,20 @@ ul {
 }
 
 .article-item {
-    background: #e9ecef;
+    background: white;
     margin: 5px 0;
     padding: 10px;
     border-radius: 4px;
     position: relative;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .copy-button {
     position: absolute;
     right: 10px;
     bottom: 10px;
-    background: #6c757d;
-    color: white;
+    background: #e9ecef;
+    color: #495057;
     border: none;
     padding: 4px 8px;
     border-radius: 3px;
@@ -30,7 +31,7 @@ ul {
 }
 
 .copy-button:hover {
-    background: #5a6268;
+    background: #dee2e6;
 }
 
 /* Copy button visibility for large screens */

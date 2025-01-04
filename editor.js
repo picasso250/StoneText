@@ -22,7 +22,7 @@ function updatePreview() {
     });
     
     // Apply syntax highlighting
-    document.querySelectorAll('pre code').forEach((block) => {
+    preview.querySelectorAll('pre code').forEach((block) => {
         hljs.highlightBlock(block);
     });
     

@@ -21,6 +21,11 @@ function updatePreview() {
         breaks: true
     });
     
+    // Apply syntax highlighting
+    document.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightBlock(block);
+    });
+    
     // Re-render MathJax after content update
     if (typeof MathJax !== 'undefined') {
         MathJax.typesetPromise && MathJax.typesetPromise();

@@ -48,17 +48,43 @@ function decryptMessage(ciphertext, key) {
 function createListItem(userName, userString) {
     const listItem = document.createElement("li");
     listItem.className = "article-item";
+    
+    // Store original markdown content
+    listItem.dataset.originalContent = userString;
+
     const userNameSpan = document.createElement("span");
     userNameSpan.className = "user-name";
-    userNameSpan.textContent = userName; // 使用 textContent
+    userNameSpan.textContent = userName;
 
     const userStringSpan = document.createElement("span");
     userStringSpan.className = "user-string";
-    userStringSpan.innerHTML = marked.parse(userString, { sanitize: true }); // Render Markdown safely
+    userStringSpan.innerHTML = marked.parse(userString, { sanitize: true });
+
+    // Add copy button
+    const copyButton = document.createElement("button");
+    copyButton.className = "copy-button";
+    copyButton.textContent = "复制";
+    copyButton.addEventListener("click", () => {
+        navigator.clipboard.writeText(userString)
+            .then(() => {
+                const originalText = copyButton.textContent;
+                copyButton.textContent = "已复制";
+                setTimeout(() => {
+                    copyButton.textContent = originalText;
+                }, 3000);
+            })
+            .catch(() => {
+                copyButton.textContent = "复制失败";
+                setTimeout(() => {
+                    copyButton.textContent = "复制";
+                }, 3000);
+            });
+    });
 
     listItem.appendChild(userNameSpan);
     listItem.appendChild(document.createElement("br"));
     listItem.appendChild(userStringSpan);
+    listItem.appendChild(copyButton);
 
     return listItem;
 }

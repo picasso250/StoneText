@@ -47,6 +47,7 @@ function decryptMessage(ciphertext, key) {
 
 function createListItem(userName, userString) {
     const listItem = document.createElement("li");
+    listItem.className = "article-item";
     const userNameSpan = document.createElement("span");
     userNameSpan.className = "user-name";
     userNameSpan.textContent = userName; // 使用 textContent
@@ -67,6 +68,7 @@ const okButton = document.getElementById("okButton");
 // Update title
 document.title = "文章存储地";
 
+const articleList = document.getElementById("articleList");
 
 // Listen for new events
 function listenForEvents(contract) {
@@ -75,8 +77,11 @@ function listenForEvents(contract) {
         const userName = event.returnValues.user;
         const encryptedStatus = event.returnValues.newStatus;
         const decryptedStatus = encryptedStatus; // No decryption
-        const stringList = document.getElementById("stringList");
-        stringList.insertBefore(createListItem(userName, decryptedStatus), stringList.firstChild);
+        articleList.insertBefore(createListItem(userName, decryptedStatus), articleList.firstChild);
+        // Re-render MathJax after new article is added
+        if (typeof MathJax !== 'undefined') {
+            MathJax.typesetPromise && MathJax.typesetPromise();
+        }
         okButton.disabled = false; // Re-enable the button after operation
     });
 }

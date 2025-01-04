@@ -20,6 +20,11 @@ function updatePreview() {
         sanitize: true,
         breaks: true
     });
+    
+    // Re-render MathJax after content update
+    if (typeof MathJax !== 'undefined') {
+        MathJax.typesetPromise && MathJax.typesetPromise();
+    }
 }
 
 function switchTab(activeTab) {

@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="editor.css">
     <link rel="stylesheet" href="list.css">
     <title>文章存储地</title>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 
 <body>
@@ -28,7 +37,7 @@
     <div class="button-container">
         <button id="okButton" type="button">发布</button>
     </div>
-    <ul id="stringList"></ul>
+    <ul id="articleList"></ul>
 
     <p>请先安装 MetaMask 插件，并切换到 Sepolia 测试链。</p>
 

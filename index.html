@@ -20,8 +20,14 @@
 </head>
 
 <body>
+    <button id="scrollBottomButton" type="button">到底部</button>
+
     <h1>文章存储地</h1>
-    <p>欢迎使用文章存储地！输入文字后，点击“确认”按钮以存储内容。</p>
+    
+    <ul id="articleList"></ul>
+
+    <h3>输入文字后，点击“发布”按钮以存储内容</h3>
+
     <div class="tab-container">
         <button class="tab-button active" id="editTab">编辑</button>
         <button class="tab-button" id="previewTab">预览</button>
@@ -37,7 +43,6 @@
     <div class="button-container">
         <button id="okButton" type="button">发布</button>
     </div>
-    <ul id="articleList"></ul>
 
     <p>请先安装 MetaMask 插件，并切换到 Sepolia 测试链。</p>
 

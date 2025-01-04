@@ -78,8 +78,16 @@ function createListItem(userName, userString) {
                 setTimeout(() => {
                     copyButton.textContent = originalText;
                 }, 3000);
-            });
     });
+
+    // 添加滚动到底部功能
+    document.getElementById('scrollBottomButton').addEventListener('click', function() {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+        });
+    });
+});
 
     listItem.appendChild(userNameSpan);
     listItem.appendChild(document.createElement("br"));
@@ -104,7 +112,7 @@ function listenForEvents(contract) {
         const encryptedStatus = event.returnValues.newStatus;
         const decryptedStatus = encryptedStatus; // No decryption
         const listItem = createListItem(userName, decryptedStatus);
-        articleList.insertBefore(listItem, articleList.firstChild);
+        articleList.appendChild(listItem);
 
         // Apply syntax highlighting
         listItem.querySelectorAll('pre code').forEach((block) => {
@@ -137,7 +145,8 @@ loadABI((contractABI) => {
 
         okButton.disabled = true; // Disable the button
 
-        const encryptedMessage = text; // No encryption
+        const encryptedMessage = text; // No encryption、
+        const okButtonText = '发布';
         try {
             contract.methods.updateStatus(encryptedMessage).send({ from: userAccount })
                 .on("transactionHash", hash => {
@@ -147,27 +156,30 @@ loadABI((contractABI) => {
                 })
                 .on("receipt", receipt => {
                     console.log("Transaction receipt:", receipt);
-                    okButton.textContent = "确认"; // Reset button text
+                    okButton.textContent = okButtonText; // Reset button text
                 })
                 .on("confirmation", (confirmationNumber, receipt) => {
-                    okButton.textContent = "确认"; // Reset button text
+                    okButton.textContent = okButtonText; // Reset button text
                     okButton.disabled = false; // Re-enable the button after operation
                     console.log("Confirmation number:", confirmationNumber, receipt);
                 })
                 .on("error", error => {
                     console.error("Transaction error:", error);
-                    okButton.textContent = "确认"; // Reset button text
+                    okButton.textContent = okButtonText; // Reset button text
                     okButton.disabled = false; // Re-enable the button after operation
                 });
         } catch (error) {
             console.error("Error storing message:", error);
-            okButton.textContent = "确认"; // Reset button text
+            okButton.textContent = okButtonText; // Reset button text
         }
     });
 
-    // Remove event listener for decrypt button
-    // decryptButton.addEventListener("click", decryptAllRecords);
+});
 
-    // Remove event listener for key input change
-    // document.getElementById("keyInput").addEventListener("input", toggleDecryptButton);
+// 添加滚动到底部功能
+document.getElementById('scrollBottomButton').addEventListener('click', function() {
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth'
+    });
 });

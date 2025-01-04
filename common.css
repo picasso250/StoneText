@@ -24,3 +24,20 @@ p {
 .button-container button {
     padding: 8px 16px;
 }
+
+#scrollBottomButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+#scrollBottomButton:hover {
+    background-color: #45a049;
+}

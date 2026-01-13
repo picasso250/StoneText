@@ -1,54 +1,66 @@
-StoneText
-===
-StoneText项目旨在通过将文字刻在赛博石头上，利用以太坊区块链技术，实现文字内容的永久存储和传承。
+## Foundry
 
-安装与配置:
-===
-1. 克隆StoneText仓库到您的本地计算机。
-   ```
-   git clone https://github.com/picasso250/StoneText.git
-   ```
+**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
 
-2. 进入项目目录。
-   ```
-   cd StoneText
-   ```
+Foundry consists of:
 
-1. 在项目根目录下，开启一个本地服务，比如使用Python自带的http服务器。
-   ```
-   python -m http.server
-   ```
+- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
+- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
+- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
+- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
 
-2. 打开浏览器，访问 http://localhost:8000 ，您将能够访问StoneText应用程序。
+## Documentation
 
-使用方法
----
-1. 运行服务并打开浏览器，访问 http://localhost:8000 。
+https://book.getfoundry.sh/
 
-3. 在界面中输入您想要刻在赛博石头上的文字内容。
+## Usage
 
-4. 连接您的以太坊钱包，确保您有足够的ETH用于交易手续费。
+### Build
 
-5. 点击“刻录”按钮，将文字内容写入以太坊区块链。
+```shell
+$ forge build
+```
 
-6. 交易确认后，您的文字内容将永久地刻在了赛博石头上，可随时查看和分享。
+### Test
 
-注意事项
----
-- 请确保您的以太坊钱包连接正常，并具有足够的资金支付交易手续费。
+```shell
+$ forge test
+```
 
-- 目前，StoneText项目仅在Sepolia链上部署，未来将在主链上进行部署。
+### Format
 
-- 在使用之前，请参考[此链接](get-test-tokens.md)获取测试网币以进行试用。
+```shell
+$ forge fmt
+```
 
-- 一旦交易完成，文字内容将无法更改或删除。请谨慎确认您的输入内容。
+### Gas Snapshots
 
-- StoneText项目仅用于存储文字信息，不支持图片、视频等多媒体内容。
+```shell
+$ forge snapshot
+```
 
-- 请遵守当地法律法规，不要发布违法、有害或侵权内容。
+### Anvil
 
-- 开发团队对使用过程中的问题不负任何责任。
+```shell
+$ anvil
+```
 
-感谢您选择StoneText项目！如有任何疑问或建议，请联系我们的技术支持团队。
+### Deploy
 
-免责声明：本项目仅为技术展示和教育用途，不承担任何法律或道德责任。
+```shell
+$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+```
+
+### Cast
+
+```shell
+$ cast <subcommand>
+```
+
+### Help
+
+```shell
+$ forge --help
+$ anvil --help
+$ cast --help
+```

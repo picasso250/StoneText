@@ -1,0 +1,16 @@
+{
+  "name": "stonetext",
+  "version": "1.0.0",
+  "description": "StoneText - 把字刻在赛博石头上",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/picasso250/StoneText.git"
+  },
+  "keywords": ["blockchain", "ethereum", "solidity"],
+  "author": "",
+  "license": "MIT"
+}

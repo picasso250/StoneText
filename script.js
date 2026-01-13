@@ -125,20 +125,22 @@ document.getElementById("storeButton").addEventListener("click", async () => {
 
 function createListItem(userName, userString) {
     const listItem = document.createElement("li");
+    listItem.className = "list-item";
 
-    const userNameSpan = document.createElement("span");
-    userNameSpan.textContent = userName;
-    userNameSpan.className = "user-name";
+    const userNameDiv = document.createElement("div");
+    userNameDiv.className = "user-name";
+    
+    const userAddress = document.createElement("span");
+    userAddress.className = "user-address";
+    userAddress.textContent = userName;
+    
+    const userStringDiv = document.createElement("div");
+    userStringDiv.className = "user-string";
+    userStringDiv.textContent = userString;
 
-    const brElement = document.createElement("br");
-
-    const userStringSpan = document.createElement("span");
-    userStringSpan.textContent = userString;
-    userStringSpan.className = "user-string";
-
-    listItem.appendChild(userNameSpan);
-    listItem.appendChild(brElement);
-    listItem.appendChild(userStringSpan);
+    userNameDiv.appendChild(userAddress);
+    listItem.appendChild(userNameDiv);
+    listItem.appendChild(userStringDiv);
 
     return listItem;
 }

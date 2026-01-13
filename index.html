@@ -4,47 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        h1 {
-            text-align: center;
-        }
-
-        input[type="text"] {
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            padding: 5px 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .user-name {
-            font-size: 0.8rem;
-            opacity: 0.5;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
     <title>StoneText - 把字刻在赛博石头上</title>
 </head>
 
 <body>
-    <h1>StoneText - 把字刻在赛博石头上</h1>
-    <p>欢迎使用 StoneText！这是一个将文字刻在赛博石头上的应用。在下面的输入框中输入你想刻在石头上的文字，然后点击“存储文字”按钮。</p>
-    <div>
-        <label for="input">输入文字：</label>
-        <input type="text" id="input">
-        <button id="storeButton">存储文字</button>
+    <div class="container">
+        <header>
+            <h1>StoneText</h1>
+            <p class="subtitle">把字刻在赛博石头上</p>
+        </header>
+        
+        <main>
+            <section class="intro">
+                <p>欢迎使用 StoneText！这是一个将文字永久刻在区块链上的应用。在下面的输入框中输入你想刻在石头上的文字，然后点击"存储文字"按钮。</p>
+            </section>
+            
+            <section class="input-section">
+                <div class="warning">
+                    <strong>⚠️ 重要提醒</strong>
+                    这是真实的 Arbitrum 主网，每次交易都会消耗真实的 ETH 费用。
+                </div>
+                
+                <div class="input-group">
+                    <div style="flex: 1;">
+                        <textarea id="input" placeholder="在这里输入你想永久保存的文字...&#10;&#10;这些文字将被永久刻在区块链上，无法删除或修改。&#10;请谨慎输入你想留下的永恒印记。" rows="6"></textarea>
+                    </div>
+                    <div style="display: flex; align-items: flex-end;">
+                        <button id="storeButton">存储文字</button>
+                    </div>
+                </div>
+                <div id="msgError"></div>
+            </section>
+            
+            <section class="messages-section">
+                <h2 class="messages-title">📜 刻下的文字</h2>
+                <ul id="stringList"></ul>
+            </section>
+        </main>
+        
+        <footer>
+            <p>请先安装 <a href="https://metamask.io/" target="_blank">MetaMask</a> 浏览器插件，我们将自动切换到 Arbitrum 主网。</p>
+            <p>💡 提示：Arbitrum 是以太坊的 Layer 2 扩容方案，交易费用更低，速度更快。</p>
+        </footer>
     </div>
-    <div id="msgError"></div>
-    <ul id="stringList"></ul>
-
-<p>请先安装MetaMask(小狐狸)插件，我们将自动切换到 Arbitrum 主网。
-        确保你有足够的 ETH，因为这是真实的主网交易。</p>
 
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <script src="script.js"></script>

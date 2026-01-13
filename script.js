@@ -110,18 +110,73 @@ async function switchToArbitrum() {
 
 // Store button click event
 document.getElementById("storeButton").addEventListener("click", async () => {
+    const button = document.getElementById("storeButton");
+    const originalText = button.textContent;
     const input = document.getElementById("input").value;
-    if (!userAccount) {
-        await connectWallet();
+    
+    if (!input.trim()) {
+        showError("请输入要存储的文字");
+        return;
     }
+    
     try {
+        if (!userAccount) {
+            await connectWallet();
+        }
+        
+        // Step 1: Waiting for user approval
+        button.textContent = "⏳ 等待用户批准...";
+        button.disabled = true;
+        
         const tx = await contract.store(input);
+        
+        // Step 2: Transaction submitted, waiting for confirmation
+        button.textContent = "⏳ 正在写入区块链...";
+        console.log("Transaction submitted:", tx.hash);
+        
         await tx.wait();
-        console.log("Transaction confirmed:", tx.hash);
+        
+        // Step 3: Transaction confirmed
+        button.textContent = "✅ 写入成功";
+        
+        // Clear input after successful transaction
+        document.getElementById("input").value = "";
+        
+        // Reset button after 2 seconds
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.disabled = false;
+        }, 2000);
+        
     } catch (error) {
         console.error("Error storing string:", error);
+        
+        // Handle different error types
+        if (error.code === 4001) {
+            showError("用户拒绝了交易");
+        } else if (error.code === -32603) {
+            showError("交易失败，请检查网络和余额");
+        } else {
+            showError("写入失败: " + (error.message || "未知错误"));
+        }
+        
+        // Reset button on error
+        button.textContent = originalText;
+        button.disabled = false;
     }
 });
+
+// Show error message
+function showError(message) {
+    const errorDiv = document.getElementById("msgError");
+    errorDiv.textContent = message;
+    errorDiv.classList.add("show");
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+        errorDiv.classList.remove("show");
+    }, 5000);
+}
 
 function createListItem(userName, userString) {
     const listItem = document.createElement("li");

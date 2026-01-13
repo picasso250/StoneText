@@ -84,13 +84,21 @@ button {
     cursor: pointer;
     font-size: 1rem;
     font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 #msgError {
     margin-top: 15px;
     padding: 10px;
     border-radius: 5px;
-    border-left: 4px solid;
+    border-left: 4px solid #e74c3c;
+    background: #fdf2f2;
+    color: #e74c3c;
     display: none;
 }
 

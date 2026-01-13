@@ -8,7 +8,9 @@ libs = ["lib"]
 [rpc_endpoints]
 arbitrum = "https://arb1.arbitrum.io/rpc"
 arbitrum_sepolia = "https://sepolia-rollup.arbitrum.io/rpc"
+sepolia = "${SEPOLIA_RPC_URL}"
 
 [etherscan]
 arbitrum = { key = "${ARBISCAN_API_KEY}" }
 arbitrum_sepolia = { key = "${ARBISCAN_API_KEY}" }
+sepolia = { key = "${ETHERSCAN_API_KEY}" }

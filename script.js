@@ -1,8 +1,9 @@
-// Connect to an Ethereum node using Web3.js
-const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+// Connect to Ethereum using ethers.js
+const provider = new ethers.providers.Web3Provider(window.ethereum);
+const signer = provider.getSigner();
 
 // Smart contract address and ABI
-const contractAddress = "0x6F4715FA5f41a567e27146800E4447396B20259d"; // Replace with your contract address
+const contractAddress = "0x3E604F83389b1A0170f497785B510E7CBf55d13a"; // Deployed to Sepolia testnet
 const contractABI = [
     {
         "anonymous": false,
@@ -24,19 +25,6 @@ const contractABI = [
         "type": "event"
     },
     {
-        "inputs": [],
-        "name": "retrieve",
-        "outputs": [
-            {
-                "internalType": "string",
-                "name": "",
-                "type": "string"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "inputs": [
             {
                 "internalType": "string",
@@ -52,23 +40,71 @@ const contractABI = [
 ];
 
 // Get the contract instance
-const contract = new web3.eth.Contract(contractABI, contractAddress);
+const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
 // Get the account from MetaMask
 let userAccount;
+
+// Sepolia testnet configuration
+const SEPOLIA_CHAIN_ID = "0xaa36a7"; // 11155111 in decimal
 
 // Prompt user to connect their MetaMask wallet
 async function connectWallet() {
     if (window.ethereum) {
         try {
-            await window.ethereum.enable();
-            userAccount = (await web3.eth.getAccounts())[0];
+            // Request account access
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            userAccount = accounts[0];
             console.log("Connected:", userAccount);
+
+            // Check current chain and switch to Sepolia if needed
+            const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
+            if (currentChainId !== SEPOLIA_CHAIN_ID) {
+                await switchToSepolia();
+            }
         } catch (error) {
             console.error("Error connecting:", error);
         }
     } else {
         console.error("MetaMask not found.");
+    }
+}
+
+// Switch to Sepolia testnet
+async function switchToSepolia() {
+    try {
+        // Try to switch to Sepolia
+        await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: SEPOLIA_CHAIN_ID }],
+        });
+    } catch (switchError) {
+        // This error code indicates that the chain has not been added to MetaMask
+        if (switchError.code === 4902) {
+            try {
+                // Add Sepolia testnet to MetaMask
+                await window.ethereum.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [
+                        {
+                            chainId: SEPOLIA_CHAIN_ID,
+                            chainName: 'Sepolia Testnet',
+                            rpcUrls: ['https://sepolia.infura.io/v3/'],
+                            nativeCurrency: {
+                                name: 'ETH',
+                                symbol: 'ETH',
+                                decimals: 18,
+                            },
+                            blockExplorerUrls: ['https://sepolia.etherscan.io'],
+                        },
+                    ],
+                });
+            } catch (addError) {
+                console.error('Error adding Sepolia network:', addError);
+            }
+        } else {
+            console.error('Error switching to Sepolia:', switchError);
+        }
     }
 }
 
@@ -79,7 +115,9 @@ document.getElementById("storeButton").addEventListener("click", async () => {
         await connectWallet();
     }
     try {
-        await contract.methods.store(input).send({ from: userAccount });
+        const tx = await contract.store(input);
+        await tx.wait();
+        console.log("Transaction confirmed:", tx.hash);
     } catch (error) {
         console.error("Error storing string:", error);
     }
@@ -111,18 +149,35 @@ let options = {
 };
 
 // Listen for new StringStored events
-contract.events.StringStored({
-    fromBlock: "genesis"
-}, function (error, event) {
-    if (error) {
-        console.error(error);
-    } else {
-        const userName = event.returnValues.user;
-        const userString = event.returnValues.str;
+contract.on("StringStored", (user, str, event) => {
+    console.log("New StringStored event:", { user, str });
+    
+    // Create and prepend the new list item
+    const stringList = document.getElementById("stringList");
+    const listItem = createListItem(user, str);
+    stringList.insertBefore(listItem, stringList.firstChild);
+});
 
-        // Create and prepend the new list item
+// Load existing events on page load
+window.addEventListener('load', async () => {
+    if (window.ethereum) {
+        await connectWallet();
+    }
+    
+    // Get past events using ethers.js
+    try {
+        const filter = contract.filters.StringStored();
+        const events = await contract.queryFilter(filter, 0, "latest");
+        
+        // Display existing events in reverse order (newest first)
         const stringList = document.getElementById("stringList");
-        const listItem = createListItem(userName, userString);
-        stringList.insertBefore(listItem, stringList.firstChild);
+        events.reverse().forEach(event => {
+            const userName = event.args.user;
+            const userString = event.args.str;
+            const listItem = createListItem(userName, userString);
+            stringList.appendChild(listItem);
+        });
+    } catch (error) {
+        console.error("Error loading past events:", error);
     }
 });

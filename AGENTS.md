@@ -8,12 +8,6 @@
 
 ---
 
-如果我在大的改动之后忘记，那么你提醒我
-"Review logic. Remove redundant code. Simplify state management. Refactor to reduce Cognitive Load"
-    Rule: Readability > Line Count.
-
----
-
 小步快跑
 
 ---

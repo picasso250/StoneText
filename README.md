@@ -52,36 +52,6 @@
 
 本项目使用 Foundry 进行开发和部署。
 
-### 基础命令
-
-```shell
-# 编译合约
-$ forge build
-
-# 运行测试
-$ forge test
-
-# 格式化代码
-$ forge fmt
-
-# Gas 快照
-$ forge snapshot
-
-# 启动本地节点
-$ anvil
-
-# 部署合约
-$ forge script script/StoneText.s.sol --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### 帮助信息
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
-
 ## 技术架构
 
 - **前端**: 原生 HTML/CSS/JavaScript，无框架依赖

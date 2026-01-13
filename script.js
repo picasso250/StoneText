@@ -3,7 +3,7 @@ const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 
 // Smart contract address and ABI
-const contractAddress = "0x3E604F83389b1A0170f497785B510E7CBf55d13a"; // Deployed to Sepolia testnet
+const contractAddress = "0x5e950c7A70aDB3331C32b5393E17649fFf4aC0a6"; // Deployed to Arbitrum mainnet
 const contractABI = [
     {
         "anonymous": false,
@@ -45,8 +45,8 @@ const contract = new ethers.Contract(contractAddress, contractABI, signer);
 // Get the account from MetaMask
 let userAccount;
 
-// Sepolia testnet configuration
-const SEPOLIA_CHAIN_ID = "0xaa36a7"; // 11155111 in decimal
+// Arbitrum mainnet configuration
+const ARBITRUM_CHAIN_ID = "0xa4b1"; // 42161 in decimal
 
 // Prompt user to connect their MetaMask wallet
 async function connectWallet() {
@@ -57,10 +57,10 @@ async function connectWallet() {
             userAccount = accounts[0];
             console.log("Connected:", userAccount);
 
-            // Check current chain and switch to Sepolia if needed
+            // Check current chain and switch to Arbitrum if needed
             const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
-            if (currentChainId !== SEPOLIA_CHAIN_ID) {
-                await switchToSepolia();
+            if (currentChainId !== ARBITRUM_CHAIN_ID) {
+                await switchToArbitrum();
             }
         } catch (error) {
             console.error("Error connecting:", error);
@@ -70,40 +70,40 @@ async function connectWallet() {
     }
 }
 
-// Switch to Sepolia testnet
-async function switchToSepolia() {
+// Switch to Arbitrum mainnet
+async function switchToArbitrum() {
     try {
-        // Try to switch to Sepolia
+        // Try to switch to Arbitrum
         await window.ethereum.request({
             method: 'wallet_switchEthereumChain',
-            params: [{ chainId: SEPOLIA_CHAIN_ID }],
+            params: [{ chainId: ARBITRUM_CHAIN_ID }],
         });
     } catch (switchError) {
         // This error code indicates that the chain has not been added to MetaMask
         if (switchError.code === 4902) {
             try {
-                // Add Sepolia testnet to MetaMask
+                // Add Arbitrum mainnet to MetaMask
                 await window.ethereum.request({
                     method: 'wallet_addEthereumChain',
                     params: [
                         {
-                            chainId: SEPOLIA_CHAIN_ID,
-                            chainName: 'Sepolia Testnet',
-                            rpcUrls: ['https://sepolia.infura.io/v3/'],
+                            chainId: ARBITRUM_CHAIN_ID,
+                            chainName: 'Arbitrum One',
+                            rpcUrls: ['https://arb1.arbitrum.io/rpc'],
                             nativeCurrency: {
                                 name: 'ETH',
                                 symbol: 'ETH',
                                 decimals: 18,
                             },
-                            blockExplorerUrls: ['https://sepolia.etherscan.io'],
+                            blockExplorerUrls: ['https://arbiscan.io'],
                         },
                     ],
                 });
             } catch (addError) {
-                console.error('Error adding Sepolia network:', addError);
+                console.error('Error adding Arbitrum network:', addError);
             }
         } else {
-            console.error('Error switching to Sepolia:', switchError);
+            console.error('Error switching to Arbitrum:', switchError);
         }
     }
 }
